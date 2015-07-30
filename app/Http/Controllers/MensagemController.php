@@ -60,7 +60,7 @@ class MensagemController extends Controller
     {
       $mensagem = \App\Mensagem::find($id);
       if (!isset($mensagem))
-        abort(404, "Mensagem não existente")
+        abort(404, "Mensagem não existente");
       return $mensagem;
     }
 
