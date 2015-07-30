@@ -17,7 +17,10 @@ class MensagemController extends Controller
      */
     public function index(Request $request)
     {
-      return \App\Mensage::all();
+      $mensagens = \App\Mensage::all();
+      if (count($mensagens))
+        return ['mensagens' => $mensagens];
+      abort(404, "Não existe mensagens");
     }
 
     /**
@@ -50,7 +53,10 @@ class MensagemController extends Controller
      */
     public function show($id)
     {
-      return \App\Mensagem::find($id);
+      $mensagem = \App\Mensagem::find($id);
+      if (!isset($mensagem))
+        abort(404, "Mensagem não existente")
+      return $mensagem;
     }
 
     /**
