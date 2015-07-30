@@ -39,8 +39,8 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        //return parent::render($request, $e);
-        if ($e instanceof HttpException) {
+        return parent::render($request, $e);
+        /*if ($e instanceof HttpException) {
           if ($e->getStatusCode() == 201) {
             $erro = [
               'estado' => $e->getStatusCode(),
@@ -65,6 +65,6 @@ class Handler extends ExceptionHandler
           }
         } else {
           return false;
-        }
+        }*/
     }
 }
