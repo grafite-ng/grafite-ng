@@ -3,10 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use \Spatie\SearchIndex\Searchable;
-use SearchIndex;
 
-class Mensagem extends Model implements Searchable
+class Mensagem extends Model
 {
   protected $table = "mensagens";
   public $timestamps = false;
@@ -54,9 +52,6 @@ class Mensagem extends Model implements Searchable
         $l = \App\Local::firstOrCreate(['local' => $local]);
         $m->locais()->save($l);
       }
-
-
-      SearchIndex::upsertToIndex($m);
     });
   }
 
@@ -92,86 +87,5 @@ class Mensagem extends Model implements Searchable
       $mensagens['locais'] = $this->locais->toArray();
 
     return $mensagens;
-  }
-
-  public function getSearchableBody()
-  {
-    $searchableProperties = [
-        'contacto' => $this->contacto,
-        'conteudo' => $this->conteudo,
-        'data' => date(DATE_ISO8601, strtotime($this->data))
-    ];
-
-    if (count($this->tags)) $searchableProperties['tags'] = $this->tags->toArray();
-    if (count($this->locais)) $searchableProperties['locais'] = $this->locais->toArray();
-
-    return $searchableProperties;
-  }
-
-  public function getSearchableType()
-  {
-    return 'mensagem';
-  }
-
-  public function getSearchableId()
-  {
-    return $this->id;
-  }
-
-
-
-  public static function search($contacto, $conteudo, $dataInicial, $dataFinal, $tag, $local)
-  {
-    if (!isset($dataInicial))
-      $dataInicial = date(DATE_ISO8601, strtotime('1970-01-01'));
-
-    if (!isset($dataFinal))
-      $dataFinal = 'now';
-
-    $pesquisa = [
-      'query' => [
-        'filtered' => [
-          'filter' => [
-            'bool' => [
-              'must' => []
-            ]
-          ]
-        ]
-      ],
-      'sort' => [
-        'data' => ['order' => 'desc']
-      ]
-    ];
-
-    $range = [
-      'range' => [
-        'data' => [
-          'gte' => $dataInicial,
-          'lte' => $dataFinal
-        ]
-      ]
-    ];
-
-    array_push($pesquisa['query']['filtered']['filter']['bool']['must'], $range);
-
-    if ($contacto)
-      array_push($pesquisa['query']['filtered']['filter']['bool']['must'],  ['term' => ['contacto' => $contacto]]);
-
-    if ($tag)
-      array_push($pesquisa['query']['filtered']['filter']['bool']['must'],  ['term' => ['tags' => $tag]]);
-
-    if ($local)
-      array_push($pesquisa['query']['filtered']['filter']['bool']['must'],  ['term' => ['locais' => $local]]);
-
-    if ($conteudo) {
-      $pesquisa['query']['filtered']['query'] = [
-        'bool' => [
-          'must' => []
-        ]
-      ];
-      array_push($pesquisa['query']['filtered']['query']['bool']['must'],  ['match_phrase' => ['conteudo' => $conteudo]]);
-    }
-
-    return $pesquisa;
   }
 }

@@ -17,14 +17,6 @@ class MensagemController extends Controller
      */
     public function index(Request $request)
     {
-      /*$tag         = $request->input("tag");
-      $local       = $request->input("local");
-      $contacto    = $request->input("contacto");
-      $dataInicial = $request->input("data_inicial");
-      $dataFinal   = $request->input("data_final");
-      $conteudo    = $request->input("conteudo");
-
-      return \App\Mensagem::search($contacto, $conteudo, $dataInicial, $dataFinal, $tag, $local);*/
       return \App\Mensage::all();
     }
 
