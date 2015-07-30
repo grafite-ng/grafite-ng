@@ -17,7 +17,7 @@ class MensagemController extends Controller
      */
     public function index(Request $request)
     {
-      $mensagens = \App\Mensage::all();
+      $mensagens = \App\Mensagem::all();
       if (count($mensagens))
         return ['mensagens' => $mensagens];
       abort(404, "Não existe mensagens");
