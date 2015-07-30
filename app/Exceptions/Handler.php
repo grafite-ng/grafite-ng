@@ -39,6 +39,32 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        return parent::render($request, $e);
+        //return parent::render($request, $e);
+        if ($e instanceof HttpException) {
+          if ($e->getStatusCode() == 201) {
+            $erro = [
+              'estado' => $e->getStatusCode(),
+              'descricao' => $e->getMessage()
+            ];
+
+            return respone($erro, 201);
+          } else ($e->getStatusCode() == 404) {
+            $erro = [
+              'estado' => $e->getStatusCode(),
+              'descricao' => $e->getMessage()
+            ];
+
+            return respone($erro, 404);
+          } else {
+            $erro = [
+              'estado' => $e->getStatusCode(),
+              'descricao' => $e->getMessage()
+            ];
+
+            return respone($erro, 201);
+          }
+        } else {
+          return false;
+        }
     }
 }
