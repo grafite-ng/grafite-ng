@@ -26,7 +26,6 @@ class Mensagem extends Model
       preg_match_all("/(^|[^a-zA-Z0-9])@([a-zA-Z0-9_])+/i", $m->conteudo, $matches);
       $locais = array();
 
-      print_r($matches[0]);
       if (!empty($matches[0])) {
         foreach($matches[0] as $match) {
           array_push($locais, preg_replace('/[^a-zA-Z0-9_]/i', "", $match));
@@ -36,7 +35,6 @@ class Mensagem extends Model
       preg_match_all("/(^|[^a-zA-Z0-9])#([a-zA-Z0-9_])+/i", $m->conteudo, $matches);
       $tags = array();
 
-      print_r($matches[0]);
       if (!empty($matches[0])) {
         foreach($matches[0] as $match) {
           array_push($tags, preg_replace('/[^a-zA-Z0-9_]/i', "", $match));
