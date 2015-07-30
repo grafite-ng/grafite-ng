@@ -39,7 +39,12 @@ class MensagemController extends Controller
     public function store(Request $request)
     {
       $mensagem = $request->json()->all();
-      return \App\Mensagem::create($mensagem);
+
+      if (\App\Mensagem::create($mensagem)) {
+        abort(201, "SMS criado");
+      } else {
+        abort(500, "Erro interno");
+      }
     }
 
     /**
