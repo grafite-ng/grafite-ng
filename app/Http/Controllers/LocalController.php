@@ -16,7 +16,7 @@ class LocalController extends Controller
      */
     public function index()
     {
-      return \App\Local::all();
+      return ['locais' => \App\Local::all()];
     }
 
     /**
