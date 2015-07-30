@@ -18,7 +18,7 @@ class MensagemDeTagController extends Controller
     {
       $t = \App\Tag::find($id);
       if ($t) {
-        return $t->mensagens->toArray();
+        return ['mensagens' => $t->mensagens->toArray()];
       }
     }
 

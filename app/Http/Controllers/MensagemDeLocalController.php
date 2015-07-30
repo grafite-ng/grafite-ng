@@ -19,7 +19,7 @@ class MensagemDeLocalController extends Controller
     {
       $l = \App\Local::find($id);
       if ($l) {
-        return $l->mensagens->toArray();
+        return ['mensagens' => $l->mensagens->toArray()];
       }
     }
 
