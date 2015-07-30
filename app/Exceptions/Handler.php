@@ -39,6 +39,18 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        return parent::render($request, $e);
+        if ($e instanceof HttpException) {
+          $erro = [
+            'erro' => [
+              'estado' => $e->getStatusCode(),
+              'descricao' => $e->getMessage()
+            ],
+          ];
+
+          if ($e->getStatusCode() == 405)
+            $erro['erro']['descricao'] = "Metodo nao permitido";
+
+          return response($erro, $e->getStatusCode());
+        }
     }
 }
